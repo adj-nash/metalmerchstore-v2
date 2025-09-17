@@ -1,0 +1,55 @@
+import { Grid2, Typography } from "@mui/material";
+import OrderSummary from "../../shared/components/OrderSummary";
+import CheckoutStepper from "./CheckoutStepper";
+import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { useEffect, useMemo, useRef } from "react";
+import { useFetchBasketQuery } from "../basket/basketApi";
+import { useCreatePaymentIntentMutation } from "./checkoutApi";
+import { useAppSelector } from "../../app/store/Store";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK)
+
+export default function Checkout()
+{
+  const {data: basket} = useFetchBasketQuery();
+  const [createPaymentIntent, {isLoading}] = useCreatePaymentIntentMutation();
+  const {darkMode} = useAppSelector(state => state.ui);
+
+  const created = useRef(false);
+
+  useEffect(() => {
+    if(!created.current) createPaymentIntent();
+    created.current = true;
+  }, [createPaymentIntent]);
+
+  const options: StripeElementsOptions | undefined = useMemo(() => {
+    if(!basket?.clientSecret) return undefined;
+    return {
+      clientSecret: basket.clientSecret,
+      appearance: {
+        theme: darkMode ? "night" : "stripe"
+      },
+
+    }
+  },[basket?.clientSecret, darkMode]);
+
+
+  return (
+    <Grid2 container spacing={2}>
+    <Grid2 size={8}>
+      {!stripePromise || !options || isLoading ? 
+      (<Typography>Loading checkout...</Typography>) : 
+      (  
+      <Elements stripe={stripePromise} options={options}> 
+        <CheckoutStepper/>
+      </Elements>
+)}
+  
+    </Grid2>
+    <Grid2 size={4}>
+      <OrderSummary />
+    </Grid2>
+  </Grid2>
+  )
+};
