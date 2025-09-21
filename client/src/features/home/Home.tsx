@@ -15,7 +15,7 @@ export default function Home() {
     <Box display="flex" alignItems="center" flexDirection="column" justifyContent="space-between">
         <Box>
           <img 
-          src="/images/HomePageBanner.jpg"
+          src="https://res.cloudinary.com/dem87dpjr/image/upload/v1758310403/HomePageBanner_nes7iy.jpg"
           alt="Banner image."
           style={{
           position: "absolute",

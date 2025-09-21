@@ -14,7 +14,7 @@ export const createProductSchema = z.object({
     category: z.string({required_error: "Product category is required."}),
     band: z.string({required_error: "Product band name is required."}),
     genre: z.string({required_error: "Band genre is required."}),
-    stock: z.coerce.number({required_error: "Stock is required."}).min(1, "Stock must be at least 1"),
+    stock: z.coerce.number({required_error: "Stock is required."}).min(0, "Stock must be at least 0 (if coming soon)."),
     imageUrl: z.string().optional(),
     file: fileSchema.optional(),
 }).refine((data) => data.imageUrl || data.file, {

@@ -1,1 +1,5 @@
-{}
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "API\\bin\\Release\\net9.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/1f7fa9d1-a558-4912-890c-d6d78d5b138b/resourceGroups/metalmerchstore/providers/Microsoft.Web/sites/metalmerchstore"
+}
